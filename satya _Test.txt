@@ -1,0 +1,112 @@
+
+fun main() {
+    println("Hello, world!!!")
+    
+    
+      /** Example 1 */
+        var maxPositionLimit = "5 5"
+        var currentPos = "1 2 N"
+        var commandsGroup = "LMLMLMLMM"
+
+
+        println("Input = \n $maxPositionLimit \n $currentPos \n $commandsGroup")
+
+        takeCommands(
+            maxPositionLimit = maxPositionLimit,
+            currentPos = currentPos,
+            commandsGroup = commandsGroup
+        )
+
+
+        
+        /** Example 2*/
+         maxPositionLimit = "5 5"
+         currentPos = "3 3 E"
+         commandsGroup = "MMRMMRMRRM"
+
+
+        println("Input = \n $maxPositionLimit \n $currentPos \n $commandsGroup")
+
+        takeCommands(
+            maxPositionLimit = maxPositionLimit,
+            currentPos = currentPos,
+            commandsGroup = commandsGroup
+        )
+    
+}
+
+ 
+ 
+ 
+
+    private fun takeCommands(maxPositionLimit: String, currentPos: String, commandsGroup: String) {
+
+
+        if (maxPositionLimit.isNullOrEmpty() && currentPos.isNullOrEmpty() && commandsGroup.isNullOrEmpty()) {
+            println("Details Are Not Valid $maxPositionLimit $currentPos $commandsGroup")
+        } else {
+
+            val maxPosition: List<String> = maxPositionLimit.split(" ")
+
+            val currentPosCoordinates = currentPos.split(" ")
+
+            val directions: String = commandsGroup
+
+            var currentPositionX: Int = 0
+            var currentPositionY: Int = 0
+            var currentDirection: String = (if (currentPosCoordinates.size == 3) {
+                currentPositionX = currentPosCoordinates[0].toInt()
+                currentPositionY = currentPosCoordinates[1].toInt()
+                currentPosCoordinates[2]
+            } else {
+                "N"
+            }).toString()
+
+            var maxPositionX: Int = 0
+            val maxPositionY = if (maxPosition.size == 2) {
+                maxPositionX = maxPosition[0].toInt()
+                maxPosition[1].toInt()
+            } else {
+                0
+            }
+
+            val commands = directions.toCharArray()
+
+            for (cmd in commands) {
+                when (cmd) {
+                    'L' -> {
+                        when (currentDirection) {
+                            "N" -> currentDirection = "W"
+                            "W" -> currentDirection = "S"
+                            "S" -> currentDirection = "E"
+                            "E" -> currentDirection = "N"
+                        }
+                    }
+
+                    'R' -> {
+                        when (currentDirection) {
+                            "N" -> currentDirection = "E"
+                            "E" -> currentDirection = "S"
+                            "S" -> currentDirection = "W"
+                            "W" -> currentDirection = "N"
+                        }
+                    }
+
+                    'M' -> {
+                        when (currentDirection) {
+                            "N" -> if (currentPositionY < maxPositionY) currentPositionY++
+                            "E" -> if (currentPositionX < maxPositionX) currentPositionX++
+                            "S" -> if (currentPositionY > 0) currentPositionY--
+                            "W" -> if (currentPositionX > 0) currentPositionX--
+                        }
+                    }
+                }
+            }
+
+            println("Output = $currentPositionX $currentPositionY $currentDirection")
+        }
+
+
+    }
+
+
